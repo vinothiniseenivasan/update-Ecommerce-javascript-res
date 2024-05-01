@@ -10,8 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    async function populateProducts() {
-        const products = await fetchProducts();
+    async function populateProducts(flag , customProducts) 
+    {
+        let products = customProducts;
+        if(flag == false)
+        {
+             products = await fetchProducts();
+        }
+       
 
         products.forEach(product => {
 
@@ -71,26 +77,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             const productList = document.getElementById("productList");
-            productList.appendChild(productItem)
-;
-
-
-
-
-
-
-
-
-
-
-
-
+            productList.appendChild(productItem);
 
         });
 
 
     }
 
-    populateProducts();
+        populateProducts(false);
+        const filterSearch = document.getElementById("search");
+        // search products by minPrice and maxPrice
+        filterSearch.addEventListener("click" , async () =>
+                   {
+                    // string convert into number
+                       const minPrice =Number(document.getElementById("minPrice").value);
+                       const maxPrice = Number(document.getElementById("maxPrice").value);
+                    //    get all products
+                       const products = await fetchProducts();
+                    //    filter products by minPrice and maxPrice
+                       filteredProducts =  products.filter((eachProduct) => eachProduct.price >= minPrice && eachProduct.price <= maxPrice)
+
+                               console.log("filteredProducts" , filteredProducts);
+
+                            //    before filter the products by minPrice and maxPrice we have to clear productList 
+
+                            let productList  = document.getElementById("productList");
+                            productList.innerHTML = "";
+                               populateProducts(true , filteredProducts);
+
+
+
+                   })
+
+        //   reload page when its clicked clearFilters
+        // Get the element with the id "clear"
+            const resetFilter = document.getElementById("clear");
+            
+            // Add an event listener to the "clear" element
+            resetFilter.addEventListener("click", () => {
+                // When the "clear" button is clicked, reload the page
+                window.location.reload();
+                minPrice.value =0;
+                maxPrice.value=0;
+});
+
+
 
 })
