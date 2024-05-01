@@ -1,106 +1,96 @@
-document.addEventListener("DOMContentLoaded", async () => {
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
 
     async function fetchProducts() {
         const response = await axios.get("https://fakestoreapi.com/products");
-        console.log(response.data);
+        console.log("data", response.data);
         return response.data;
     }
 
-    async function fetchProductsByCategory(category) {
-        const response = await axios.get(`https://fakestoreapi.com/products/category/${category}`);
-        console.log(response.data);
-        return response.data;
-    }
 
-    async function fetchCategories() {
-        // this function is marked async so this will also return a promise
-        const response = await fetch("https://fakestoreapi.com/products/categories");
-        const data = await response.json();
-        return data;
-    }
+    async function populateProducts() {
+        const products = await fetchProducts();
 
-    const downloadedProducts = await fetchProducts();
-
-    async function populateProducts(flag, customProducts) {
-        let products = customProducts;
-        
-        const queryParamsObject = getQueryParams();
-        if(flag == false) {
-            if(queryParamsObject['category']) {
-                products = await fetchProductsByCategory(queryParamsObject['category']);
-            } else {
-                products = await fetchProducts();
-            }
-        }
-        
-        const productList = document.getElementById("productList");
         products.forEach(product => {
+
+            //    <a href="productDetails.html" target="_blank" class="product-item text-decoration-none d-inline-block">
             const productItem = document.createElement("a");
-            productItem.target = "_blank";
-            productItem.classList.add("product-item", "text-decoration-none", "d-inline-block")
-            productItem.href = `productDetails.html?id=${product.id}`;
+            productItem.target = "-blank";
+            productItem.classList.add("product-item", "text-decoration-none", "d-inline-block");
+            productItem.href = "productDetails.html";
 
+            // <div class="product-list-box" id="productList">
+              
+            //     <a href="productDetails.html" target="_blank" class="product-item text-decoration-none d-inline-block">
+            //         <div class="product-img">
+            //             <img src="img/product.jpg" alt="">
+            //         </div>
+            //         <div class="product-name text-center">Some product</div>
+            //         <div class="product-price text-center">&#8377; 10000</div>
+            //     </a>
+
+            // </div>
+
+
+            // image
             const productImage = document.createElement("div");
-            const productName = document.createElement("div");
-            const productPrice = document.createElement("div");
-
             productImage.classList.add("product-img");
-            productName.classList.add("product-name", "text-center");
-            productPrice.classList.add("product-price", "text-center");
-
-            productName.textContent = product.title.substring(0, 12) + "..."; 
-            productPrice.textContent = `&#8377; ${product.price}`;
-
             const imageInsideProductImage = document.createElement("img");
             imageInsideProductImage.src = product.image;
 
-            // append divs
+            // append img tag inside div tag
             productImage.appendChild(imageInsideProductImage);
+
+
+            // title
+            const productName = document.createElement("div");
+            productName.classList.add("product-name" ,  "text-center");
+            if(product.title.length > 12)
+            {
+                productName.textContent =product.title.substring(0,12)+ "..."
+
+            }
+            else
+            {
+                productName.textContent =product.title;
+            }
+          
+
+            // price
+            const productPrice = document.createElement("div");
+            productPrice.textContent = `$ ${product.price}`;
+
+            productPrice.classList.add("product-price","text-center");
+
+            // append 3 div inside a tag
             productItem.appendChild(productImage);
             productItem.appendChild(productName);
             productItem.appendChild(productPrice);
 
-            productList.appendChild(productItem);
+
+            const productList = document.getElementById("productList");
+            productList.appendChild(productItem)
+;
+
+
+
+
+
+
+
+
+
+
+
+
 
         });
+
+
     }
 
-    async function populateCategories() {
-        const categories = await fetchCategories();
-        const categoryList = document.getElementById("categoryList");
-        categories.forEach(category => {
-            const categoryLink = document.createElement("a");
-            categoryLink.classList.add("d-flex", "text-decoration-none");
-            categoryLink.textContent = category;
-            categoryLink.href = `productList.html?category=${category}`;
+    populateProducts();
 
-            categoryList.appendChild(categoryLink);
-        })
-    }
-
-    async function downloadContentAndPopulate () {
-        Promise.all([populateProducts(false), populateCategories()])
-        .then(() => {
-            removeLoader();
-        });
-    }
-    downloadContentAndPopulate();
-
-
-    const filterSearch = document.getElementById("search");
-    filterSearch.addEventListener("click", async () => {
-        const productList = document.getElementById("productList");
-        const minPrice = Number(document.getElementById("minPrice").value);
-        const maxPrice = Number(document.getElementById("maxPrice").value);
-        const products = downloadedProducts;
-        filteredProducts = products.filter(product =>  product.price >= minPrice && product.price <= maxPrice);
-        productList.innerHTML = "";
-        populateProducts(true, filteredProducts);
-    });
-
-    const resetFilter = document.getElementById("clear");
-    resetFilter.addEventListener("click", () => {
-        window.location.reload();
-    })
-
-});
+})
