@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const queryParams = new URLSearchParams(window.location.search);
         // we want that queryparams
         const queryParamsObject = Object.fromEntries(queryParams.entries());
-        console.log("queryCategory", queryParamsObject["category"]);
+        console.log("queryCategory", queryParamsObject["category "]);
 
 
 
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    async function populateCtaegories() {
+    async function populateCategories() {
          //    here categories :
             //   "electronics",
             //   "jewelery",
@@ -151,10 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     anchorTag.innerHTML = category;
                                     console.log("each category" , category)
                                     categoryList.appendChild(anchorTag);
-                                    anchorTag.addEventListener("click" , () =>{
-                                        //   console.log("inside anc tag" ,category)
-                                              populateProducts(false , category)
-                                     })
+                                    //  
                                     
                                 })
 
@@ -162,8 +159,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    populateProducts(false);
-    populateCtaegories();
+
+   async function  downloadContentAndPopulate()
+    {
+    //    await populateProducts(false);
+    //    await populateCategories();
+
+    //    instead of 2 promises calling we can use promis.all
+    // promise.all => uses array of promises
+    Promise.all([populateProducts(false) , populateCategories()])
+    .then(()=>
+           {
+            const loaderBackdrop = document.getElementById("loader-backdrop");
+            loaderBackdrop.style.display ='none';
+               
+           })
+
+
+      
+    }
+
+
+    downloadContentAndPopulate();
+
+  
 
     const filterSearch = document.getElementById("search");
     // search products by minPrice and maxPrice

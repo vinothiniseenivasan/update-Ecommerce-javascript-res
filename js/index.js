@@ -11,6 +11,9 @@ async function populateCtaegories() {
 
 
     const categories = await fetchCategories();
+    const loaderBackdrop = document.getElementById("loader-backdrop");
+    loaderBackdrop.style.display ='none';
+
     // categories => (mobile , Electronics ,jwellery)
     const categoryList = document.getElementById("categoryList");
 
