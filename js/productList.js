@@ -4,18 +4,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     async function fetchProducts() {
+
         const response = await axios.get("https://fakestoreapi.com/products");
         console.log("data", response.data);
         return response.data;
     }
 
 
+    async function fetchProductsByCategory(category) {
+        category = category.trim();
+        console.log("category in fetchProductsByCategory",  category);
+        const response = await axios.get(`https://fakestoreapi.com/products/category/${category}`);
+        console.log("data", response.data);
+        return response.data;
+    }
+    
+    
+
+
     async function populateProducts(flag , customProducts) 
     {
         let products = customProducts;
-        if(flag == false)
+
+        // when click categories like electronics and jwellery in home page href =>    we have reference of query param in url
+        // http://127.0.0.1:5500/productList.html?category%20=%20men%27s%20clothing
+        // here mens clothing 
+        // we want that queryparams
+
+        const queryParams = new URLSearchParams(window.location.search);
+        const queryParamsObject = Object.fromEntries(queryParams.entries());
+        console.log("queryCategory" , queryParamsObject);
+
+
+
+        if(flag === false)
         {
-             products = await fetchProducts();
+            if(queryParamsObject["category "])
+            {
+                // category => jwellery ,Electronics
+                // fetch particular products
+              products =await  fetchProductsByCategory(queryParamsObject["category "])
+                console.log("category" , products);
+            }
+            else
+            {
+                // fetch All Products
+                products = await fetchProducts();
+                console.log("allProduct");
+            }
+            
         }
        
 
