@@ -6,14 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchProducts() {
 
         const response = await axios.get("https://fakestoreapi.com/products");
-        console.log("data", response.data);
+        // console.log("data", response.data);
         return response.data;
     }
 
 
     async function fetchProductsByCategory(category) {
+
+       console.log("category in fetchProductsByCategory", category);
         category = category.trim();
-        console.log("category in fetchProductsByCategory", category);
         const response = await axios.get(`https://fakestoreapi.com/products/category/${category}`);
         console.log("data", response.data);
         return response.data;
@@ -29,8 +30,71 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    
+    async function populateProductsForSideBar(sideCategory) 
+    {
+      
+       
+                products = await fetchProductsByCategory(sideCategory);
+                console.log("category", products);
+                populateProductsForSideCategory(products)
 
+    }
+    async function populateProductsForSideCategory( products) 
+     {
+        const productList = document.getElementById("productList");
+        productList.innerHTML = ""; // Clear previous products before rendering new ones
 
+        products.forEach(product => {
+            
+                    //    <a href="productDetails.html" target="_blank" class="product-item text-decoration-none d-inline-block">
+                    const productItem = document.createElement("a");
+                    productItem.target = "-blank";
+                    productItem.classList.add("product-item", "text-decoration-none", "d-inline-block");
+                    productItem.href = "productDetails.html";
+        
+                    // image
+                    const productImage = document.createElement("div");
+                    productImage.classList.add("product-img");
+                    const imageInsideProductImage = document.createElement("img");
+                    imageInsideProductImage.src = product.image;
+        
+                    // append img tag inside div tag
+                    productImage.appendChild(imageInsideProductImage);
+        
+        
+                    // title
+                    const productName = document.createElement("div");
+                    productName.classList.add("product-name", "text-center");
+                    if (product.title.length > 12) {
+                        productName.textContent = product.title.substring(0, 12) + "..."
+        
+                    }
+                    else {
+                        productName.textContent = product.title;
+                    }
+        
+        
+                    // price
+                    const productPrice = document.createElement("div");
+                    productPrice.textContent = `$ ${product.price}`;
+        
+                    productPrice.classList.add("product-price", "text-center");
+        
+                    // append 3 div inside a tag
+                    productItem.appendChild(productImage);
+                    productItem.appendChild(productName);
+                    productItem.appendChild(productPrice);
+        
+        
+                   
+                    productList.appendChild(productItem);
+        
+                });
+      
+    }
+    
+    
 
     async function populateProducts(flag, customProducts) {
         let products = customProducts;
@@ -43,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const queryParams = new URLSearchParams(window.location.search);
         // we want that queryparams
         const queryParamsObject = Object.fromEntries(queryParams.entries());
-        console.log("queryCategory", queryParamsObject["category "]);
+        // console.log("queryCategory", queryParamsObject);
 
 
 
@@ -52,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // category => jwellery ,Electronics
                 // fetch particular products
                 products = await fetchProductsByCategory(queryParamsObject["category "])
-                console.log("category", products);
+                // console.log("category", products);
             }
             else {
                 // fetch All Products
@@ -69,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const productItem = document.createElement("a");
             productItem.target = "-blank";
             productItem.classList.add("product-item", "text-decoration-none", "d-inline-block");
-            productItem.href = "productDetails.html";
+            productItem.href = `productDetails.html?${product.id}`;
 
             // <div class="product-list-box" id="productList">
 
@@ -151,7 +215,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                     anchorTag.innerHTML = category;
                                     console.log("each category" , category)
                                     categoryList.appendChild(anchorTag);
-                                    //  
+                                    anchorTag.addEventListener("click" , (event) =>
+                                              {
+                                                // Prevent the default action of the anchor tag
+                                                  event.preventDefault();
+
+                                                console.log("activate anchorTag")
+                                               populateProductsForSideBar(category)
+
+                                              })
                                     
                                 })
 
