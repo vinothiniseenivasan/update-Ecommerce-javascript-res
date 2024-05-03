@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const productItem = document.createElement("a");
             productItem.target = "-blank";
             productItem.classList.add("product-item", "text-decoration-none", "d-inline-block");
-            productItem.href = `productDetails.html?${product.id}`;
+            productItem.href = `productDetails.html?id = ${product.id}`;
 
             // <div class="product-list-box" id="productList">
 
@@ -242,8 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Promise.all([populateProducts(false) , populateCategories()])
     .then(()=>
            {
-            const loaderBackdrop = document.getElementById("loader-backdrop");
-            loaderBackdrop.style.display ='none';
+            removeLoader();
                
            })
 
