@@ -18,9 +18,28 @@ function removeLoader()
 
 async function fetchProductById(id)
 {
-    id =id.trim()
+    if(typeof id === 'string')
+        {
+            id =id.trim()
+        }
+   
     const product = await axios.get(`https://fakestoreapi.com/products/${id}`);
-    // console.log("common fetchProductById" ,id)
+     console.log("common fetchProductById" ,product)
     return product;
    
+}
+async function fetchProductByIdSecond(id)
+{
+   
+    const product = await axios.get(`https://fakestoreapi.com/products/${id}`);
+     console.log("common fetchProductById" ,product)
+    return product.data;
+   
+}
+
+
+async function fetchCardById(id)
+{
+    const cart = await axios.get(`https://fakestoreapi.com/carts/${id}`);
+    return cart.data;
 }

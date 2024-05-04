@@ -242,7 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
     Promise.all([populateProducts(false) , populateCategories()])
     .then(()=>
            {
-            removeLoader();
+            const loaderBackdrop = document.getElementById("loader-backdrop");
+            loaderBackdrop.style.display ='none';
                
            })
 
