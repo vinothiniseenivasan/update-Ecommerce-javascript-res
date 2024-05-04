@@ -1,5 +1,5 @@
 <p>
-<h3></h3><strong># Shop Cart</strong></p>h3>
+<h3></h3><strong># Shop Cart</strong></p></h3>
 </p>
 <p>
 Shop Cart is a web application for online shopping. It allows users to browse
@@ -51,4 +51,7 @@ products, add them to their cart, and proceed to checkout.
 - Popper.js
 </p>
 <strong> ## ScreenShot </strong>
-![Screenshot 2024-05-04 135201](https://github.com/vinothiniseenivasan/update-Ecommerce-javascript-res/assets/137482214/aac08272-5964-47c2-bea4-1f7d743fc1f8)
+<p>
+  ![Screenshot 2024-05-04 135201](https://github.com/vinothiniseenivasan/update-Ecommerce-javascript-res/assets/137482214/aac08272-5964-47c2-bea4-1f7d743fc1f8)
+</p>
+
