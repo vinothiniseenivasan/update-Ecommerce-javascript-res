@@ -51,3 +51,5 @@ products, add them to their cart, and proceed to checkout.
 - Popper.js
 </p>
 <strong> ## ScreenShot </strong>
+![img](https://github.com/vinothiniseenivasan/update-Ecommerce-javascript-res/assets/137482214/162e211f-5870-4c7f-aa17-8dc6d66902dd)
+
